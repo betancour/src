@@ -1,0 +1,52 @@
+This is a demo file for testing the Java Text Editor functionality.
+
+Here are some sample lines with different patterns:
+- Line 1: This contains the word "test" multiple times. Test, TEST, test.
+- Line 2: Another line with some text to search through.
+- Line 3: Regular expressions like \d+ can match numbers: 123, 456, 789.
+- Line 4: Whole word matching should distinguish between "cat" and "catch".
+
+Some repeated words for testing:
+- cat
+- catch
+- category
+- scattered
+
+Numbers for regex testing: 42, 100, 999, 2023
+
+Mixed case testing:
+- Hello World
+- HELLO WORLD
+- hello world
+- HeLLo WoRLd
+
+This file demonstrates various search patterns that can be used with:
+1. Case sensitive/insensitive searching
+2. Whole word matching
+3. Regular expression patterns
+4. Find and replace operations
+
+You can test replacing "test" with "example" or using regex to find all numbers.
+The undo/redo functionality will let you revert changes easily.
+
+Cut, copy, and paste operations work with selected text.
+Try selecting some text and using Ctrl+C, Ctrl+X, and Ctrl+V.
+
+Features to test:
+- Undo (Ctrl+Z) and Redo (Ctrl+Y)
+- Find (Ctrl+F) and Replace (Ctrl+H)
+- Line and column tracking in status bar
+- File type detection (this file uses Unix line endings)
+- Read/write permissions display
+
+Java Text Editor keyboard shortcuts:
+- Ctrl+N: New file
+- Ctrl+O: Open file
+- Ctrl+S: Save file
+- Ctrl+F: Find text
+- Ctrl+H: Replace text
+- F3: Find next
+- Ctrl+A: Select all
+- Ctrl+T: Open terminal
+
+End of demo file.
