@@ -4,6 +4,7 @@
 package editor.ui;
 
 import javax.swing.*;
+import java.awt.*;
 import editor.actions.FileActions;
 import editor.actions.EditActions;
 import editor.actions.SearchActions;
@@ -14,16 +15,14 @@ public class ToolBarFactory {
         var tb = new JToolBar();
         tb.setFloatable(false);
         tb.setRollover(true);
+        tb.setMargin(new Insets(2, 2, 2, 2));
 
         // File operations
-        var newBtn = new JButton(SystemIconHelper.getBestIcon("new")); 
-        newBtn.setToolTipText("New File (Ctrl+N)");
+        var newBtn = createToolBarButton(SystemIconHelper.getBestIcon("new"), "New File (Ctrl+N)"); 
         newBtn.addActionListener(e -> FileActions.newFile(parent, panel));
-        var openBtn = new JButton(SystemIconHelper.getBestIcon("open")); 
-        openBtn.setToolTipText("Open File (Ctrl+O)");
+        var openBtn = createToolBarButton(SystemIconHelper.getBestIcon("open"), "Open File (Ctrl+O)"); 
         openBtn.addActionListener(e -> FileActions.openFile(parent, panel));
-        var saveBtn = new JButton(SystemIconHelper.getBestIcon("save")); 
-        saveBtn.setToolTipText("Save File (Ctrl+S)");
+        var saveBtn = createToolBarButton(SystemIconHelper.getBestIcon("save"), "Save File (Ctrl+S)"); 
         saveBtn.addActionListener(e -> FileActions.saveFile(parent, panel, false));
 
         // Edit operations
@@ -33,47 +32,40 @@ public class ToolBarFactory {
         var copyAction = new EditActions.CopyAction(panel.getTextArea());
         var pasteAction = new EditActions.PasteAction(panel.getTextArea());
         
-        var undoBtn = new JButton(SystemIconHelper.getBestIcon("undo"));
+        var undoBtn = createToolBarButton(SystemIconHelper.getBestIcon("undo"), "Undo (Ctrl+Z)");
         undoBtn.setAction(undoAction);
         undoBtn.setIcon(SystemIconHelper.getBestIcon("undo"));
         undoBtn.setText("");
-        undoBtn.setToolTipText("Undo (Ctrl+Z)");
         
-        var redoBtn = new JButton(SystemIconHelper.getBestIcon("redo"));
+        var redoBtn = createToolBarButton(SystemIconHelper.getBestIcon("redo"), "Redo (Ctrl+Y)");
         redoBtn.setAction(redoAction);
         redoBtn.setIcon(SystemIconHelper.getBestIcon("redo"));
         redoBtn.setText("");
-        redoBtn.setToolTipText("Redo (Ctrl+Y)");
         
-        var cutBtn = new JButton(SystemIconHelper.getBestIcon("cut"));
+        var cutBtn = createToolBarButton(SystemIconHelper.getBestIcon("cut"), "Cut (Ctrl+X)");
         cutBtn.setAction(cutAction);
         cutBtn.setIcon(SystemIconHelper.getBestIcon("cut"));
         cutBtn.setText("");
-        cutBtn.setToolTipText("Cut (Ctrl+X)");
         
-        var copyBtn = new JButton(SystemIconHelper.getBestIcon("copy"));
+        var copyBtn = createToolBarButton(SystemIconHelper.getBestIcon("copy"), "Copy (Ctrl+C)");
         copyBtn.setAction(copyAction);
         copyBtn.setIcon(SystemIconHelper.getBestIcon("copy"));
         copyBtn.setText("");
-        copyBtn.setToolTipText("Copy (Ctrl+C)");
         
-        var pasteBtn = new JButton(SystemIconHelper.getBestIcon("paste"));
+        var pasteBtn = createToolBarButton(SystemIconHelper.getBestIcon("paste"), "Paste (Ctrl+V)");
         pasteBtn.setAction(pasteAction);
         pasteBtn.setIcon(SystemIconHelper.getBestIcon("paste"));
         pasteBtn.setText("");
-        pasteBtn.setToolTipText("Paste (Ctrl+V)");
         
         // Search operations
         var findAction = new SearchActions.FindAction(parent, panel);
-        var findBtn = new JButton(SystemIconHelper.getBestIcon("find"));
+        var findBtn = createToolBarButton(SystemIconHelper.getBestIcon("find"), "Find (Ctrl+F)");
         findBtn.setAction(findAction);
         findBtn.setIcon(SystemIconHelper.getBestIcon("find"));
         findBtn.setText("");
-        findBtn.setToolTipText("Find (Ctrl+F)");
         
         // Terminal
-        var termBtn = new JButton(SystemIconHelper.getBestIcon("terminal")); 
-        termBtn.setToolTipText("Open Terminal (Ctrl+T)");
+        var termBtn = createToolBarButton(SystemIconHelper.getBestIcon("terminal"), "Open Terminal (Ctrl+T)"); 
         termBtn.addActionListener(e -> FileActions.openTerminal(parent));
 
         // Add buttons to toolbar
@@ -97,5 +89,26 @@ public class ToolBarFactory {
         tb.add(termBtn);
         
         return tb;
+    }
+    
+    /**
+     * Creates a toolbar button with consistent Windows 3.1 style proportions
+     */
+    private static JButton createToolBarButton(Icon icon, String tooltip) {
+        JButton button = new JButton(icon);
+        button.setToolTipText(tooltip);
+        
+        // Windows 3.1 style proportions
+        button.setPreferredSize(new Dimension(24, 24));
+        button.setMinimumSize(new Dimension(24, 24));
+        button.setMaximumSize(new Dimension(24, 24));
+        
+        // Button styling
+        button.setMargin(new Insets(2, 2, 2, 2));
+        button.setFocusPainted(false);
+        button.setBorderPainted(true);
+        button.setContentAreaFilled(true);
+        
+        return button;
     }
 }

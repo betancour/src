@@ -51,11 +51,6 @@ public class SystemIconHelper {
     }
     
     public static Icon getCutIcon() {
-        // Try system icon first
-        Icon icon = UIManager.getIcon("Tree.leafIcon");
-        if (icon != null) {
-            return icon;
-        }
         // Fallback to geometric scissors icon
         return createGeometricIcon("cut", new Color(200, 50, 50));
     }
@@ -76,17 +71,12 @@ public class SystemIconHelper {
     }
     
     public static Icon getUndoIcon() {
-        // Try system icon first
-        Icon icon = UIManager.getIcon("OptionPane.questionIcon");
-        if (icon != null && icon.getIconWidth() <= 16) {
-            return icon;
-        }
-        // Fallback to geometric undo arrow
+        // Fallback to geometric undo arrow (left pointing)
         return createGeometricIcon("undo", new Color(150, 50, 150));
     }
     
     public static Icon getRedoIcon() {
-        // Fallback to geometric redo arrow
+        // Fallback to geometric redo arrow (right pointing)
         return createGeometricIcon("redo", new Color(150, 50, 150));
     }
     
@@ -119,30 +109,32 @@ public class SystemIconHelper {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // Background circle
+                // Background circle with padding for 24x24 button
+                int padding = 2;
+                int size = 20 - (padding * 2);
                 g2.setColor(color.brighter());
-                g2.fillOval(x, y, 16, 16);
+                g2.fillOval(x + padding, y + padding, size, size);
                 
                 // Border
                 g2.setColor(color.darker());
-                g2.drawOval(x, y, 16, 16);
+                g2.drawOval(x + padding, y + padding, size, size);
                 
                 // Text
                 g2.setColor(Color.WHITE);
-                g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+                g2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 11));
                 FontMetrics fm = g2.getFontMetrics();
-                int textX = x + (16 - fm.stringWidth(text)) / 2;
-                int textY = y + (16 - fm.getHeight()) / 2 + fm.getAscent();
+                int textX = x + padding + (size - fm.stringWidth(text)) / 2;
+                int textY = y + padding + (size - fm.getHeight()) / 2 + fm.getAscent();
                 g2.drawString(text, textX, textY);
                 
                 g2.dispose();
             }
             
             @Override
-            public int getIconWidth() { return 16; }
+            public int getIconWidth() { return 20; }
             
             @Override
-            public int getIconHeight() { return 16; }
+            public int getIconHeight() { return 20; }
         };
     }
     
@@ -158,21 +150,21 @@ public class SystemIconHelper {
                 g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
                 
                 g2.setColor(color);
-                g2.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+                g2.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
                 FontMetrics fm = g2.getFontMetrics();
                 
-                int textX = x + (16 - fm.stringWidth(symbol)) / 2;
-                int textY = y + (16 - fm.getHeight()) / 2 + fm.getAscent();
+                int textX = x + (20 - fm.stringWidth(symbol)) / 2;
+                int textY = y + (20 - fm.getHeight()) / 2 + fm.getAscent();
                 g2.drawString(symbol, textX, textY);
                 
                 g2.dispose();
             }
             
             @Override
-            public int getIconWidth() { return 16; }
+            public int getIconWidth() { return 20; }
             
             @Override
-            public int getIconHeight() { return 16; }
+            public int getIconHeight() { return 20; }
         };
     }
     
@@ -187,67 +179,81 @@ public class SystemIconHelper {
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(color);
                 
+                // Add 2px padding for better proportion in 24x24 buttons
+                int padding = 2;
+                int centerX = x + 10;
+                int centerY = y + 10;
+                
                 switch (operation.toLowerCase()) {
                     case "cut":
-                        // Draw scissors-like shape
-                        g2.setStroke(new BasicStroke(1.5f));
-                        // Scissor blades
-                        g2.drawLine(x + 3, y + 3, x + 8, y + 8);
-                        g2.drawLine(x + 3, y + 13, x + 8, y + 8);
-                        g2.drawLine(x + 8, y + 8, x + 13, y + 3);
-                        g2.drawLine(x + 8, y + 8, x + 13, y + 13);
-                        // Handle circles
-                        g2.fillOval(x + 2, y + 2, 3, 3);
-                        g2.fillOval(x + 11, y + 11, 3, 3);
+                        // Draw scissors icon
+                        g2.setStroke(new BasicStroke(1.8f));
+                        // Left blade
+                        g2.drawLine(x + padding, y + centerY - 2, centerX, centerY);
+                        g2.drawLine(x + padding, y + centerY + 2, centerX, centerY);
+                        // Right blade  
+                        g2.drawLine(centerX, centerY, x + 20 - padding, y + centerY - 2);
+                        g2.drawLine(centerX, centerY, x + 20 - padding, y + centerY + 2);
+                        // Handle holes
+                        g2.drawOval(x + padding - 1, y + centerY - 4, 4, 4);
+                        g2.drawOval(x + 20 - padding - 3, y + centerY - 4, 4, 4);
+                        // Center screw
+                        g2.fillOval(centerX - 1, centerY - 1, 2, 2);
                         break;
                     case "copy":
                         // Draw two overlapping rectangles
-                        g2.drawRect(x + 2, y + 2, 8, 8);
-                        g2.drawRect(x + 6, y + 6, 8, 8);
+                        g2.setStroke(new BasicStroke(1.5f));
+                        g2.drawRect(x + padding, y + padding, 10, 10);
+                        g2.drawRect(x + padding + 4, y + padding + 4, 10, 10);
                         break;
                     case "paste":
                         // Draw clipboard shape
-                        g2.drawRect(x + 3, y + 2, 10, 12);
-                        g2.drawRect(x + 6, y + 1, 4, 2);
-                        g2.drawLine(x + 5, y + 6, x + 11, y + 6);
-                        g2.drawLine(x + 5, y + 8, x + 11, y + 8);
-                        g2.drawLine(x + 5, y + 10, x + 9, y + 10);
+                        g2.setStroke(new BasicStroke(1.5f));
+                        g2.drawRect(x + padding + 1, y + padding, 14, 16);
+                        g2.drawRect(x + padding + 5, y + padding - 1, 6, 3);
+                        g2.drawLine(x + padding + 3, y + padding + 6, x + padding + 13, y + padding + 6);
+                        g2.drawLine(x + padding + 3, y + padding + 9, x + padding + 13, y + padding + 9);
+                        g2.drawLine(x + padding + 3, y + padding + 12, x + padding + 10, y + padding + 12);
                         break;
                     case "find":
                         // Draw magnifying glass
-                        g2.setStroke(new BasicStroke(1.5f));
-                        g2.drawOval(x + 2, y + 2, 8, 8);
-                        g2.drawLine(x + 8, y + 8, x + 13, y + 13);
+                        g2.setStroke(new BasicStroke(2.0f));
+                        g2.drawOval(x + padding, y + padding, 10, 10);
+                        g2.drawLine(x + padding + 8, y + padding + 8, x + 18 - padding, y + 18 - padding);
                         break;
                     case "replace":
                         // Draw find and replace arrows
-                        g2.setStroke(new BasicStroke(1.5f));
+                        g2.setStroke(new BasicStroke(1.8f));
                         // Left arrow
-                        g2.drawLine(x + 2, y + 5, x + 7, y + 5);
-                        g2.drawLine(x + 2, y + 5, x + 4, y + 3);
-                        g2.drawLine(x + 2, y + 5, x + 4, y + 7);
+                        g2.drawLine(x + padding, y + centerY - 3, x + padding + 8, y + centerY - 3);
+                        g2.drawLine(x + padding, y + centerY - 3, x + padding + 3, y + centerY - 6);
+                        g2.drawLine(x + padding, y + centerY - 3, x + padding + 3, y + centerY);
                         // Right arrow
-                        g2.drawLine(x + 9, y + 11, x + 14, y + 11);
-                        g2.drawLine(x + 14, y + 11, x + 12, y + 9);
-                        g2.drawLine(x + 14, y + 11, x + 12, y + 13);
+                        g2.drawLine(x + padding + 6, y + centerY + 3, x + 20 - padding, y + centerY + 3);
+                        g2.drawLine(x + 20 - padding, y + centerY + 3, x + 17 - padding, y + centerY);
+                        g2.drawLine(x + 20 - padding, y + centerY + 3, x + 17 - padding, y + centerY + 6);
                         break;
                     case "undo":
-                        // Draw curved arrow pointing left
-                        g2.setStroke(new BasicStroke(1.5f));
-                        g2.drawArc(x + 3, y + 3, 10, 10, 45, 180);
-                        g2.drawLine(x + 6, y + 3, x + 3, y + 6);
-                        g2.drawLine(x + 6, y + 3, x + 9, y + 6);
+                        // Draw left-pointing arrow
+                        g2.setStroke(new BasicStroke(2.0f));
+                        // Arrow shaft
+                        g2.drawLine(x + padding + 2, centerY, x + 20 - padding - 2, centerY);
+                        // Arrow head (pointing left)
+                        g2.drawLine(x + padding + 2, centerY, x + padding + 6, centerY - 4);
+                        g2.drawLine(x + padding + 2, centerY, x + padding + 6, centerY + 4);
                         break;
                     case "redo":
-                        // Draw curved arrow pointing right
-                        g2.setStroke(new BasicStroke(1.5f));
-                        g2.drawArc(x + 3, y + 3, 10, 10, 135, 180);
-                        g2.drawLine(x + 10, y + 3, x + 13, y + 6);
-                        g2.drawLine(x + 10, y + 3, x + 7, y + 6);
+                        // Draw right-pointing arrow  
+                        g2.setStroke(new BasicStroke(2.0f));
+                        // Arrow shaft
+                        g2.drawLine(x + padding + 2, centerY, x + 20 - padding - 2, centerY);
+                        // Arrow head (pointing right)
+                        g2.drawLine(x + 20 - padding - 2, centerY, x + 20 - padding - 6, centerY - 4);
+                        g2.drawLine(x + 20 - padding - 2, centerY, x + 20 - padding - 6, centerY + 4);
                         break;
                     default:
                         // Default to a simple rectangle
-                        g2.drawRect(x + 2, y + 2, 12, 12);
+                        g2.drawRect(x + padding, y + padding, 16, 16);
                         break;
                 }
                 
@@ -255,10 +261,10 @@ public class SystemIconHelper {
             }
             
             @Override
-            public int getIconWidth() { return 16; }
+            public int getIconWidth() { return 20; }
             
             @Override
-            public int getIconHeight() { return 16; }
+            public int getIconHeight() { return 20; }
         };
     }
     
