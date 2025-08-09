@@ -1,0 +1,72 @@
+# Java compiled classes
+*.class
+bin/
+target/
+build/
+out/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+.settings/
+.project
+.classpath
+.metadata/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Package files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Exception: Keep Ikonli dependencies
+!lib/ikonli-*.jar
+
+# Maven/Gradle
+.mvn/
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# JUnit test results
+TEST-*.xml
+
+# Application specific
+sources.tmp
+IconTest.*
+
+# Runtime files
+hs_err_pid*
+replay_pid*

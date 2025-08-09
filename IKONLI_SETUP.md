@@ -10,8 +10,17 @@ Ikonli is a Java library that provides access to professional icon fonts like Fo
 
 ### 1. Download Dependencies
 
-Run the dependency download script:
+**For Unix/Linux/macOS:**
+```bash
+./download-dependencies.sh
+```
 
+**For Windows:**
+```cmd
+download-dependencies.bat
+```
+
+**For Git Bash/WSL on Windows:**
 ```bash
 ./download-dependencies.sh
 ```
@@ -24,18 +33,30 @@ This will download the following JAR files to the `lib/` directory:
 
 ### 2. Build with Dependencies
 
-The build script has been updated to automatically include Ikonli dependencies:
+The build scripts have been updated to automatically include Ikonli dependencies:
 
+**For Unix/Linux/macOS:**
 ```bash
 ./build.sh
 ```
 
+**For Windows:**
+```cmd
+build.bat
+```
+
 ### 3. Run the Application
 
-The run script will automatically include the dependencies in the classpath:
+The run scripts will automatically include the dependencies in the classpath:
 
+**For Unix/Linux/macOS:**
 ```bash
 ./run.sh
+```
+
+**For Windows:**
+```cmd
+run.bat
 ```
 
 ## Icon Mapping
@@ -79,7 +100,9 @@ When Ikonli is available, the following professional icons will be used:
 
 ### Download script fails?
 
-Make sure you have either `curl` or `wget` installed:
+Make sure you have a download tool installed:
+
+**Unix/Linux/macOS:**
 ```bash
 # Check if curl is available
 curl --version
@@ -88,15 +111,39 @@ curl --version
 wget --version
 ```
 
+**Windows:**
+```cmd
+# Check if curl is available (Windows 10+ usually has it)
+curl --version
+
+# Or check if PowerShell is available
+powershell -Command "Get-Command Invoke-WebRequest"
+
+# Or certutil (built into Windows)
+certutil -?
+```
+
 ### Build fails with classpath errors?
 
 1. Clean and rebuild:
+
+   **Unix/Linux/macOS:**
    ```bash
    rm -rf bin/
    ./build.sh
    ```
+   
+   **Windows:**
+   ```cmd
+   rmdir /s /q bin
+   build.bat
+   ```
 
-2. Check that all JAR files are present in `lib/`
+2. Check that all JAR files are present in `lib/` directory
+
+3. Ensure classpath separators are correct for your platform:
+   - Unix/Linux/macOS: uses `:` (colon)
+   - Windows: uses `;` (semicolon)
 
 ## Manual Download (Alternative)
 
@@ -121,3 +168,23 @@ The integration uses a **graceful degradation** approach:
 4. **Runtime detection** - Icons are chosen at runtime based on library availability
 
 This ensures the application works perfectly with or without professional icons!
+
+## Platform-Specific Notes
+
+### Windows
+- **Download tools**: curl (Windows 10+), PowerShell, or certutil
+- **Classpath separator**: semicolon (`;`)
+- **Scripts**: Use `.bat` files
+- **Git Bash/WSL**: Can use Unix-style `.sh` scripts
+
+### macOS/Linux
+- **Download tools**: curl or wget (usually pre-installed)
+- **Classpath separator**: colon (`:`)
+- **Scripts**: Use `.sh` files
+- **Permissions**: May need `chmod +x *.sh` to make scripts executable
+
+### Cross-Platform Compatibility
+- All scripts automatically detect the operating system
+- Classpath separators are handled automatically
+- Color output is disabled on Windows CMD for better compatibility
+- Multiple download methods are tried in order of preference

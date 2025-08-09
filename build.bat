@@ -33,8 +33,26 @@ if %SIZE%==0 (
     exit /b 1
 )
 
-rem Compile all Java files
-javac -d "%BIN_DIR%" -sourcepath "%SRC_DIR%" @sources.tmp
+rem Build classpath with Ikonli dependencies
+set "CLASSPATH="
+if exist "lib" (
+    echo Including Ikonli dependencies...
+    for %%f in (lib\*.jar) do (
+        if defined CLASSPATH (
+            set "CLASSPATH=!CLASSPATH!;%%f"
+        ) else (
+            set "CLASSPATH=%%f"
+        )
+    )
+    echo Classpath: !CLASSPATH!
+)
+
+rem Compile all Java files with classpath
+if defined CLASSPATH (
+    javac -cp "!CLASSPATH!" -d "%BIN_DIR%" -sourcepath "%SRC_DIR%" @sources.tmp
+) else (
+    javac -d "%BIN_DIR%" -sourcepath "%SRC_DIR%" @sources.tmp
+)
 
 rem Check if compilation was successful
 if %errorlevel%==0 (
@@ -52,7 +70,11 @@ if %errorlevel%==0 (
     echo   src\docs\      - Documentation
     echo.
     echo To run the application:
-    echo   cd src ^&^& java -cp bin editor.Main
+    if defined CLASSPATH (
+        echo   cd src ^&^& java -cp "bin;!CLASSPATH!" editor.Main
+    ) else (
+        echo   cd src ^&^& java -cp bin editor.Main
+    )
     echo.
     
 ) else (

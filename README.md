@@ -1,8 +1,14 @@
 # Java Text Editor
 
-A modern, feature-rich text editor built with Java Swing, designed for programmers and power users.
+A modern, feature-rich text editor built with Java Swing, designed for programmers and power users. Features professional icons powered by Ikonli with automatic fallback support.
 
 ## Features
+
+### User Interface
+- **Professional Icons** - FontAwesome and Material Design icons via Ikonli-Swing
+- **Cross-platform compatibility** - Windows, macOS, and Linux support
+- **Graceful fallback** - Works with or without professional icon dependencies
+- **Modern toolbar** - Clean, intuitive interface with properly proportioned icons
 
 ### Core Editing
 - **Full-featured text editing** with syntax highlighting support
@@ -75,17 +81,61 @@ src/
 │   └── utils/                    # Utility classes
 │       ├── FileUtils.java        # File I/O operations
 │       ├── OSUtils.java          # Operating system utilities
-│       ├── SystemIconHelper.java # System icon integration
+│       ├── SystemIconHelper.java # Enhanced icon system with Ikonli support
+│       ├── IkonliIconProvider.java # Professional icon loading
 │       └── IconTester.java       # Icon testing utility
+├── lib/                          # Professional icon dependencies (optional)
+│   ├── ikonli-core-12.3.1.jar
+│   ├── ikonli-swing-12.3.1.jar
+│   ├── ikonli-fontawesome5-pack-12.3.1.jar
+│   └── ikonli-material2-pack-12.3.1.jar
 ├── bin/                          # Compiled classes (generated)
 ├── resources/                    # Application resources
 ├── docs/                         # Documentation
-├── build.sh                     # Unix/Linux build script
-├── build.bat                    # Windows build script
-├── run.sh                       # Unix/Linux run script
-├── run.bat                      # Windows run script
+├── build.sh                     # Unix/Linux build script (with Ikonli support)
+├── build.bat                    # Windows build script (with Ikonli support)
+├── run.sh                       # Unix/Linux run script (with Ikonli support)
+├── run.bat                      # Windows run script (with Ikonli support)
+├── download-dependencies.sh     # Download professional icons (Unix)
+├── download-dependencies.bat    # Download professional icons (Windows)
+├── test-icons.sh                # Test icon system
 └── README.md                    # This file
 ```
+
+## Professional Icon Setup (Optional)
+
+For the best visual experience, enable professional FontAwesome and Material Design icons:
+
+### Download Icon Dependencies
+
+#### On Unix/Linux/macOS:
+```bash
+cd src
+chmod +x download-dependencies.sh
+./download-dependencies.sh
+```
+
+#### On Windows:
+```cmd
+cd src
+download-dependencies.bat
+```
+
+This downloads 4 JAR files (~1.1MB total) to the `lib/` directory:
+- FontAwesome 5 icon pack
+- Material Design 2 icon pack  
+- Ikonli core and Swing integration
+
+### Verify Icon Setup
+```bash
+cd src
+chmod +x test-icons.sh
+./test-icons.sh
+```
+
+Expected output: `✓ Ikonli-Swing loaded successfully - Using professional icons`
+
+**Note**: The application works perfectly without professional icons - they're just a visual enhancement!
 
 ## Building and Running
 
@@ -151,9 +201,15 @@ java -cp bin editor.Main
 - Real-time status feedback and error handling
 
 #### SystemIconHelper
-- Dynamic system icon detection and fallback
-- Custom geometric icons for operations without system equivalents
+- Enhanced with professional Ikonli icon support
+- Three-tier fallback: Professional → System → Geometric
+- Dynamic system icon detection with graceful degradation
 - Look and Feel integration for native appearance
+
+#### IkonliIconProvider
+- Dynamic loading of FontAwesome and Material Design icons
+- Reflection-based approach for optional dependency support
+- Professional vector icons with consistent design language
 
 #### StatusBar
 - Real-time cursor position tracking
@@ -186,6 +242,18 @@ java -cp bin editor.Main
 - Optimized search algorithms
 - Memory-efficient undo/redo implementation
 
+## Dependencies
+
+### Core Dependencies
+- Java Standard Library (Swing, AWT)
+- No external dependencies required for basic functionality
+
+### Optional Dependencies (Professional Icons)
+- Ikonli Core 12.3.1
+- Ikonli Swing 12.3.1  
+- FontAwesome 5 Pack 12.3.1
+- Material Design 2 Pack 12.3.1
+
 ## License
 
 This project is open source. Feel free to use, modify, and distribute according to your needs.
@@ -203,6 +271,7 @@ This project is open source. Feel free to use, modify, and distribute according 
 - **v1.1** - Added find and replace functionality
 - **v1.2** - Enhanced with system icons and improved UI
 - **v1.3** - Added status bar and file information display
+- **v1.4** - Professional icon integration with Ikonli-Swing support
 
 ## Support
 

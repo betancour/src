@@ -39,15 +39,22 @@ if [ ! -s sources.tmp ]; then
     exit 1
 fi
 
-# Build classpath with Ikonli dependencies
+# Build classpath with Ikonli dependencies (cross-platform)
 CLASSPATH=""
+SEPARATOR=":"
+
+# Detect Windows environment for classpath separator
+case "$(uname -s 2>/dev/null || echo 'Windows')" in
+    CYGWIN*|MINGW32*|MSYS*|MINGW*) SEPARATOR=";" ;;
+esac
+
 if [ -d "lib" ] && [ "$(ls -A lib/*.jar 2>/dev/null)" ]; then
     echo -e "${YELLOW}Including Ikonli dependencies...${NC}"
     for jar in lib/*.jar; do
         if [ -z "$CLASSPATH" ]; then
             CLASSPATH="$jar"
         else
-            CLASSPATH="$CLASSPATH:$jar"
+            CLASSPATH="$CLASSPATH$SEPARATOR$jar"
         fi
     done
     echo -e "${GREEN}Classpath: $CLASSPATH${NC}"
@@ -76,7 +83,7 @@ if [ $? -eq 0 ]; then
     
     echo -e "${GREEN}To run the application:${NC}"
     if [ -n "$CLASSPATH" ]; then
-        echo "  cd src && java -cp bin:$CLASSPATH editor.Main"
+        echo "  cd src && java -cp bin$SEPARATOR$CLASSPATH editor.Main"
     else
         echo "  cd src && java -cp bin editor.Main"
     fi

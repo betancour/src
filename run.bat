@@ -8,6 +8,15 @@ rem Project directories
 set BIN_DIR=bin
 set MAIN_CLASS=editor.Main
 
+rem Build classpath with Ikonli dependencies
+set "CLASSPATH=%BIN_DIR%"
+if exist "lib" (
+    echo Including Ikonli dependencies...
+    for %%f in (lib\*.jar) do (
+        set "CLASSPATH=!CLASSPATH!;%%f"
+    )
+)
+
 echo === Java Text Editor Runner ===
 
 rem Check if bin directory exists
@@ -29,7 +38,7 @@ if not exist "%BIN_DIR%\editor\Main.class" (
 echo Starting Java Text Editor...
 
 rem Run the application
-java -cp "%BIN_DIR%" "%MAIN_CLASS%"
+java -cp "%CLASSPATH%" "%MAIN_CLASS%"
 
 echo Application closed.
 pause

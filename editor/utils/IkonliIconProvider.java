@@ -124,7 +124,7 @@ public class IkonliIconProvider {
     }
     
     public static Icon getReplaceIcon(int size, Color color) {
-        return createMaterialIcon("SEARCH_REPLACE", size, color);
+        return createFontAwesomeIcon("EXCHANGE_ALT", size, color);
     }
     
     public static Icon getTerminalIcon(int size, Color color) {

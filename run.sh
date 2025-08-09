@@ -16,12 +16,19 @@ NC='\033[0m' # No Color
 BIN_DIR="bin"
 MAIN_CLASS="editor.Main"
 
-# Build classpath with Ikonli dependencies
+# Build classpath with Ikonli dependencies (cross-platform)
 CLASSPATH="$BIN_DIR"
+SEPARATOR=":"
+
+# Detect Windows environment for classpath separator
+case "$(uname -s 2>/dev/null || echo 'Windows')" in
+    CYGWIN*|MINGW32*|MSYS*|MINGW*) SEPARATOR=";" ;;
+esac
+
 if [ -d "lib" ] && [ "$(ls -A lib/*.jar 2>/dev/null)" ]; then
     echo -e "${YELLOW}Including Ikonli dependencies...${NC}"
     for jar in lib/*.jar; do
-        CLASSPATH="$CLASSPATH:$jar"
+        CLASSPATH="$CLASSPATH$SEPARATOR$jar"
     done
 fi
 
