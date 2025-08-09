@@ -16,6 +16,15 @@ NC='\033[0m' # No Color
 BIN_DIR="bin"
 MAIN_CLASS="editor.Main"
 
+# Build classpath with Ikonli dependencies
+CLASSPATH="$BIN_DIR"
+if [ -d "lib" ] && [ "$(ls -A lib/*.jar 2>/dev/null)" ]; then
+    echo -e "${YELLOW}Including Ikonli dependencies...${NC}"
+    for jar in lib/*.jar; do
+        CLASSPATH="$CLASSPATH:$jar"
+    done
+fi
+
 echo -e "${BLUE}=== Java Text Editor Runner ===${NC}"
 
 # Check if bin directory exists
@@ -37,6 +46,6 @@ fi
 echo -e "${GREEN}Starting Java Text Editor...${NC}"
 
 # Run the application
-java -cp "$BIN_DIR" "$MAIN_CLASS"
+java -cp "$CLASSPATH" "$MAIN_CLASS"
 
 echo -e "${BLUE}Application closed.${NC}"

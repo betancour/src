@@ -39,8 +39,26 @@ if [ ! -s sources.tmp ]; then
     exit 1
 fi
 
-# Compile all Java files
-javac -d "$BIN_DIR" -sourcepath "$SRC_DIR" @sources.tmp
+# Build classpath with Ikonli dependencies
+CLASSPATH=""
+if [ -d "lib" ] && [ "$(ls -A lib/*.jar 2>/dev/null)" ]; then
+    echo -e "${YELLOW}Including Ikonli dependencies...${NC}"
+    for jar in lib/*.jar; do
+        if [ -z "$CLASSPATH" ]; then
+            CLASSPATH="$jar"
+        else
+            CLASSPATH="$CLASSPATH:$jar"
+        fi
+    done
+    echo -e "${GREEN}Classpath: $CLASSPATH${NC}"
+fi
+
+# Compile all Java files with classpath
+if [ -n "$CLASSPATH" ]; then
+    javac -cp "$CLASSPATH" -d "$BIN_DIR" -sourcepath "$SRC_DIR" @sources.tmp
+else
+    javac -d "$BIN_DIR" -sourcepath "$SRC_DIR" @sources.tmp
+fi
 
 # Check if compilation was successful
 if [ $? -eq 0 ]; then
@@ -57,7 +75,11 @@ if [ $? -eq 0 ]; then
     echo "  src/docs/      - Documentation"
     
     echo -e "${GREEN}To run the application:${NC}"
-    echo "  cd src && java -cp bin editor.Main"
+    if [ -n "$CLASSPATH" ]; then
+        echo "  cd src && java -cp bin:$CLASSPATH editor.Main"
+    else
+        echo "  cd src && java -cp bin editor.Main"
+    fi
     
 else
     echo -e "${RED}Compilation failed!${NC}"
