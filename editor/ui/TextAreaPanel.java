@@ -23,6 +23,8 @@ public class TextAreaPanel extends JPanel {
     private String fileType = "OS";
     private boolean readOnly = false;
     private final UndoManager undoManager = new UndoManager();
+    private LineNumberView lineNumberView;
+    private boolean lineNumbersVisible = true;
 
     public TextAreaPanel() {
         super(new BorderLayout());
@@ -31,8 +33,9 @@ public class TextAreaPanel extends JPanel {
         textArea.setLineWrap(false);
         textArea.setWrapStyleWord(false);
 
+        lineNumberView = new LineNumberView(textArea);
         scrollPane = new JScrollPane(textArea);
-        scrollPane.setRowHeaderView(new LineNumberView(textArea));
+        scrollPane.setRowHeaderView(lineNumberView);
         add(scrollPane, BorderLayout.CENTER);
         
         // Add undo support
@@ -182,15 +185,44 @@ public class TextAreaPanel extends JPanel {
     }
     
     // Helper class for file information
+    /**
+     * Toggle line numbers on/off
+     */
+    public void toggleLineNumbers() {
+        lineNumbersVisible = !lineNumbersVisible;
+        if (lineNumbersVisible) {
+            scrollPane.setRowHeaderView(lineNumberView);
+        } else {
+            scrollPane.setRowHeaderView(null);
+        }
+        firePropertyChange("lineNumbers", !lineNumbersVisible, lineNumbersVisible);
+    }
+    
+    /**
+     * Check if line numbers are visible
+     */
+    public boolean isLineNumbersVisible() {
+        return lineNumbersVisible;
+    }
+    
+    /**
+     * Set line numbers visibility
+     */
+    public void setLineNumbersVisible(boolean visible) {
+        if (lineNumbersVisible != visible) {
+            toggleLineNumbers();
+        }
+    }
+
     public static class FileInfo {
-        public final int totalLines;
+        public final int lines;
         public final boolean readOnly;
-        public final String fileType;
+        public final String type;
         
-        public FileInfo(int totalLines, boolean readOnly, String fileType) {
-            this.totalLines = totalLines;
+        public FileInfo(int lines, boolean readOnly, String type) {
+            this.lines = lines;
             this.readOnly = readOnly;
-            this.fileType = fileType;
+            this.type = type;
         }
     }
 }

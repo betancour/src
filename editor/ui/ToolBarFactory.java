@@ -64,6 +64,18 @@ public class ToolBarFactory {
         findBtn.setIcon(SystemIconHelper.getBestIcon("find"));
         findBtn.setText("");
         
+        // Line numbers toggle
+        var lineNumBtn = createToolBarButton(SystemIconHelper.getLineNumbersIcon(), "Toggle Line Numbers"); 
+        lineNumBtn.addActionListener(e -> {
+            panel.toggleLineNumbers();
+            // Update button appearance based on state
+            if (panel.isLineNumbersVisible()) {
+                lineNumBtn.setToolTipText("Hide Line Numbers");
+            } else {
+                lineNumBtn.setToolTipText("Show Line Numbers");
+            }
+        });
+        
         // Terminal
         var termBtn = createToolBarButton(SystemIconHelper.getBestIcon("terminal"), "Open Terminal (Ctrl+T)"); 
         termBtn.addActionListener(e -> FileActions.openTerminal(parent));
@@ -86,6 +98,7 @@ public class ToolBarFactory {
         tb.add(findBtn);
         tb.addSeparator();
         
+        tb.add(lineNumBtn);
         tb.add(termBtn);
         
         return tb;

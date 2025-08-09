@@ -69,7 +69,7 @@ public class EditorFrame extends JFrame {
         textPanel.addPropertyChangeListener("fileInfo", evt -> {
             TextAreaPanel.FileInfo fileInfo = (TextAreaPanel.FileInfo) evt.getNewValue();
             if (fileInfo != null) {
-                statusBar.setFileInfo(fileInfo.totalLines, fileInfo.readOnly, fileInfo.fileType);
+                statusBar.setFileInfo(fileInfo.lines, fileInfo.readOnly, fileInfo.type);
             }
         });
         

@@ -5,6 +5,22 @@ target/
 build/
 out/
 
+# Test artifacts
+test-bin/
+test-lib/
+test-reports/
+test-sources.tmp
+junit-*.xml
+TEST-*.xml
+
+# Packaging artifacts
+packaging/build/
+packaging/dist/
+*.deb
+*.exe
+*.msi
+*.dmg
+
 # Temporary files
 *.tmp
 *.temp
@@ -46,6 +62,11 @@ Desktop.ini
 # Exception: Keep Ikonli dependencies
 !lib/ikonli-*.jar
 
+# Exception: Keep test dependencies (if manually downloaded)
+!test-lib/junit-*.jar
+!test-lib/opentest4j-*.jar
+!test-lib/apiguardian-*.jar
+
 # Maven/Gradle
 .mvn/
 .gradle/
@@ -60,13 +81,16 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 
-# JUnit test results
-TEST-*.xml
-
 # Application specific
 sources.tmp
+test-sources.tmp
 IconTest.*
 
 # Runtime files
 hs_err_pid*
 replay_pid*
+
+# Build scripts logs
+build-*.log
+test-*.log
+package-*.log

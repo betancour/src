@@ -84,6 +84,16 @@ public class MenuBarFactory {
         search.addSeparator();
         search.add(findNextItem);
         
+        // View Menu
+        var view = new JMenu("View");
+        var lineNumbersItem = new JCheckBoxMenuItem("Line Numbers", panel.isLineNumbersVisible());
+        lineNumbersItem.setIcon(SystemIconHelper.getLineNumbersIcon());
+        lineNumbersItem.addActionListener(e -> {
+            panel.toggleLineNumbers();
+            lineNumbersItem.setSelected(panel.isLineNumbersVisible());
+        });
+        view.add(lineNumbersItem);
+        
         // Tools Menu
         var tools = new JMenu("Tools");
         var term = new JMenuItem("Open Terminal", SystemIconHelper.getBestIcon("terminal"));
@@ -93,6 +103,7 @@ public class MenuBarFactory {
         mb.add(file); 
         mb.add(edit); 
         mb.add(search);
+        mb.add(view);
         mb.add(tools);
         
         // Update undo/redo states periodically

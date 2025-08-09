@@ -142,6 +142,15 @@ public class SystemIconHelper {
         }
         return icon;
     }
+    
+    public static Icon getLineNumbersIcon() {
+        Icon icon = IkonliIconProvider.getLineNumbersIcon(16, new Color(100, 100, 100));
+        if (icon != null) {
+            return icon;
+        }
+        // Fallback to geometric line numbers icon
+        return createGeometricIcon("linenumbers", new Color(100, 100, 100));
+    }
 
     /**
      * Creates a simple text-based icon
@@ -433,6 +442,19 @@ public class SystemIconHelper {
 							x + 20 - padding - 6,
 							centerY + 4
 						);
+						break;
+					case "linenumbers":
+						// Draw line numbers icon (list with numbers)
+						g2.setStroke(new BasicStroke(1.5f));
+						// Draw three lines representing text
+						g2.drawLine(x + padding + 6, y + padding + 4, x + 20 - padding, y + padding + 4);
+						g2.drawLine(x + padding + 6, y + padding + 8, x + 18 - padding, y + padding + 8);
+						g2.drawLine(x + padding + 6, y + padding + 12, x + 16 - padding, y + padding + 12);
+						// Draw line numbers
+						g2.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 8));
+						g2.drawString("1", x + padding + 1, y + padding + 6);
+						g2.drawString("2", x + padding + 1, y + padding + 10);
+						g2.drawString("3", x + padding + 1, y + padding + 14);
 						break;
 					default:
 						// Default to a simple rectangle

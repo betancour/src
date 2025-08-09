@@ -130,4 +130,8 @@ public class IkonliIconProvider {
     public static Icon getTerminalIcon(int size, Color color) {
         return createFontAwesomeIcon("TERMINAL", size, color);
     }
+    
+    public static Icon getLineNumbersIcon(int size, Color color) {
+        return createFontAwesomeIcon("LIST_OL", size, color);
+    }
 }
